@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<style>
+#mydiv {
+  position: absolute;
+  z-index: 9;
+  background-color: #f1f1f1;
+  text-align: center;
+  border: 1px solid #d3d3d3;
+  width: 250px;
+  height: 200px;
+
+
+}
+
+#mydivheader {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+
+  
+}
+
+button{
+    width: 200px;
+  }
+
+.content{
+  line-height: 35px;
+    height: 150px;
+}
+#message, #amount, #delay{
+    height: 20px;
+    width: 150px;
+}
+
+
+</style>
+
+
+<div id="mydiv">
+  <div id="mydivheader">Discord Spammer</div>
+
+        <div class="content">
+                <input type="text" name="message" placeholder="Message" id="message" class="message">
+                <input type="text" name="amount" placeholder="Amount" id="amount" class="amount">
+                <input type="text" name="delay" placeholder="Delay" id="delay" class="delay">
+                <br>
+                <button type="submit" value="Submit" onclick="spam()"><a>Submit</a></button>
+        </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+//Make the DIV element draggagle:
+dragElement(document.getElementById("mydiv"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+function spam(){
+
+    const amount = document.getElementById('amount').value;
+    const message = document.getElementById('message').value;
+    const delay = document.getElementById('delay').value;
+
+
+    console.log(amount)
+    console.log(message)
+    console.log(delay)
+
+
+    if (isNaN(amount)){
+        alert("Amount must be a number")
+        return;
+    }
+
+    if (isNaN(delay)){
+        alert("Delay must be a number")
+        return;
+    }else if (delay === ""){
+        delay = 1000;
+    }
+
+    if (message == ""){
+        alert("Message must not be empty")
+        return;
+    }
+
+
+    for (let step = 0; step < amount; step++) {
+
+        setTimeout(function(){
+            request = new XMLHttpRequest();
+            request.withCredentials = true;
+            request.open("POST", `https://discord.com/api/v9/channels/${document.URL.split("/")[5]}/messages`);
+            request.setRequestHeader("authorization", (webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m).find(m=>m?.exports?.default?.getToken!==void 0).exports.default.getToken());
+            request.setRequestHeader("accept", "/");
+            request.setRequestHeader("authority", "discordapp.com");
+            request.setRequestHeader("content-type", "application/json");
+            request.send(JSON.stringify({ content: message }));
+        }, delay) 
+
+  }
+}
+
+
+
+
+
+
+
+
+
+</script>
+
